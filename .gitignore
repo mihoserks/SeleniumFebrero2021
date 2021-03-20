@@ -39,3 +39,4 @@ hs_err_pid*
 *.prefs
 .DS_Store
 SeleniumFeb2021/target/classes/datafiles/data.properties
+*\target\classes\*
