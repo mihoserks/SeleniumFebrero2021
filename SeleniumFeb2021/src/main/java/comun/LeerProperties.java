@@ -10,7 +10,7 @@ public class LeerProperties {
 	private static Properties systemProp = null;
 	private Properties m_properties = new Properties();
 	
-	
+	//Un comentario
 	/**
 	 * @author Sergio
 	 * @date  06/03/2021
