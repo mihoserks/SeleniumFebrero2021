@@ -103,7 +103,7 @@ static LeerProperties prop = new LeerProperties();
 		String randomName = names.get(index);
 		
 		return randomName;
-	}
+	}//TEst
 	
 	public static String randomName2() {
 		Date date = new Date();
