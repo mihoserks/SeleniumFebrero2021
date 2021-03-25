@@ -105,6 +105,9 @@ static LeerProperties prop = new LeerProperties();
 		return randomName;
 	}//TEst
 	
+	//test 
+	//esto es una prueba
+	
 	public static String randomName2() {
 		Date date = new Date();
 		
