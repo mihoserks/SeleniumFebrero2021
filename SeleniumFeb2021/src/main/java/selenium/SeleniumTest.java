@@ -18,6 +18,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 
@@ -31,23 +33,24 @@ static String path = System.getProperty("user.dir");
 
 	public static void main(String[] args) {
 //		C:\Users\srv44\Feb2021\SeleniumFeb2021 \\chromedriver\\chromedriver.exe
-		String rutaChrome = System.getProperty("user.dir") +"\\chromedriver\\chromedriver.exe";
-		System.setProperty("webdriver.chrome.driver", rutaChrome);
-		//Options para abrir 
-		ChromeOptions option = new ChromeOptions();
-		option.addArguments("--start-maximized");
-		option.addArguments("--incognito");
-		WebDriver driver = new ChromeDriver(option);
-//		driver.manage().window().maximize();
-		//un implicit wait que nos sirve para demorar la ejecucion 
-		driver.manage().timeouts().implicitlyWait(20, TimeUnit.MILLISECONDS);
+//		String rutaChrome = System.getProperty("user.dir") +"\\chromedriver\\chromedriver.exe";
+//		System.setProperty("webdriver.chrome.driver", rutaChrome);
+//		//Options para abrir 
+//		ChromeOptions option = new ChromeOptions();
+//		option.addArguments("--start-maximized");
+//		option.addArguments("--incognito");
+//		WebDriver driver = new ChromeDriver(option);
+////		driver.manage().window().maximize();
+//		//un implicit wait que nos sirve para demorar la ejecucion 
+//		driver.manage().timeouts().implicitlyWait(20, TimeUnit.MILLISECONDS);
+		
 		prop.getSystemProperties();
 		
 		String url = System.getProperty("URL");
 		
+		driver = startDriver(url);
 	
-	
-		driver.get(url);
+//		driver.get(url);
 		WebElement txt_usernameById = driver.findElement(By.id("txtUsername"));
 		WebElement txt_usernamebyName = driver.findElement(By.name("txtUsername"));
 		
@@ -177,7 +180,7 @@ static String path = System.getProperty("user.dir");
 	
 	
 	public static WebDriver startDriver(String url) {
-		
+		try {
 		prop.getSystemProperties();
 		
 		String browser = System.getProperty("BROWSER");
@@ -194,18 +197,31 @@ static String path = System.getProperty("user.dir");
 			driver.get(url);
 			break;
 		case "firefox": 
-			
-			System.setProperty("webdriver.chrome.driver",  path + "\\geckodriver\\geckodriver.exe");
+			System.setProperty("webdriver.gecko.driver",  path + "\\geckodriver\\geckodriver.exe");
 			FirefoxOptions foption = new FirefoxOptions();
 			foption.addArguments("--start-maximized");
 			foption.addArguments("--incognito");
 			driver = new FirefoxDriver(foption);
 			driver.get(url);
-		
+			break;
+		case "edge":
+			System.setProperty("webdriver.edge.driver", path+"\\edgedriver\\msedgedriver.exe");
+			EdgeOptions eoptions = new EdgeOptions();
+			eoptions.addArguments("--start-maximized");
+			eoptions.addArguments("--incognito");
+			driver = new  EdgeDriver(eoptions);
+			driver.get(url);
+			break;
+			
+		default: System.out.println("El driver [ "+browser+" ] no esta configurado para funcionar en este proyecto");
+		}//end switch
+		driver.manage().timeouts().implicitlyWait(20, TimeUnit.MILLISECONDS);
+		}catch(Exception e) {
+			e.printStackTrace();
+			System.out.println("El driver no puede ser inicializado");
 		}
 		
-		
 		return driver;
-	}
+	}//end startDriver
 	
 }
