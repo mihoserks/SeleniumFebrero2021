@@ -18,12 +18,16 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
 
 import comun.LeerProperties;
 
 public class SeleniumTest {
 public static Logger log = Logger.getLogger(SeleniumTest.class);
 static LeerProperties prop = new LeerProperties();
+static WebDriver driver;
+static String path = System.getProperty("user.dir");
 
 	public static void main(String[] args) {
 //		C:\Users\srv44\Feb2021\SeleniumFeb2021 \\chromedriver\\chromedriver.exe
@@ -82,10 +86,13 @@ static LeerProperties prop = new LeerProperties();
 		}
 		
 	
-		System.out.println(randomName());
-		System.out.println(randomName2());
+
+		System.out.println(getRandomNumber(2));
 		System.out.println(getRandomNumber(10));
-	
+		System.out.println(getRandomNumber(20));
+		System.out.println(getRandomNumber(30));
+		System.out.println(getRandomNumber(50));
+		System.out.println(getRandomNumber(100));
 		
 	}//main  
 	
@@ -157,17 +164,48 @@ static LeerProperties prop = new LeerProperties();
 	}
 	
 	
-	public static String getRandomNumber(double length) {
+	public static String getRandomNumber(int length) {
+		StringBuilder str = new StringBuilder();
 		Random random = new Random();
-		int randomNumber = 0;
-		Boolean flag = true;
-		while (flag) {
-			randomNumber = random.nextInt();
-			if (Double.toString(randomNumber).length() == length && !Double.toString(randomNumber).startsWith("-")) {
-				flag = false;
-			}
-		}
-		return String.valueOf(randomNumber);
-	}
 
+		for (int i = 0; i < length; i++) {
+			str.append(random.nextInt(10));
+		}
+		return str.toString();
+
+	}
+	
+	
+	public static WebDriver startDriver(String url) {
+		
+		prop.getSystemProperties();
+		
+		String browser = System.getProperty("BROWSER");
+		
+		switch (browser) {
+		
+		case "chrome":
+			System.setProperty("webdriver.chrome.driver",  path + "\\chromedriver\\chromedriver.exe");
+			ChromeOptions option = new ChromeOptions();
+			option.addArguments("--start-maximized");
+			option.addArguments("--incognito");
+			driver = new ChromeDriver(option);
+			
+			driver.get(url);
+			break;
+		case "firefox": 
+			
+			System.setProperty("webdriver.chrome.driver",  path + "\\geckodriver\\geckodriver.exe");
+			FirefoxOptions foption = new FirefoxOptions();
+			foption.addArguments("--start-maximized");
+			foption.addArguments("--incognito");
+			driver = new FirefoxDriver(foption);
+			driver.get(url);
+		
+		}
+		
+		
+		return driver;
+	}
+	
 }
