@@ -53,7 +53,7 @@ public class Base {
 				System.setProperty("webdriver.gecko.driver", path + "\\geckodriver\\geckodriver.exe");
 				FirefoxOptions foption = new FirefoxOptions();
 				foption.addArguments("--start-maximized");
-				foption.addArguments("--incognito");
+				foption.addArguments("-private");
 				driver = new FirefoxDriver(foption);
 				driver.get(url);
 				break;
@@ -61,7 +61,7 @@ public class Base {
 				System.setProperty("webdriver.edge.driver", path + "\\edgedriver\\msedgedriver.exe");
 				EdgeOptions eoptions = new EdgeOptions();
 				eoptions.addArguments("--start-maximized");
-				eoptions.addArguments("--incognito");
+				eoptions.addArguments("-inprivate");
 				driver = new EdgeDriver(eoptions);
 				driver.get(url);
 				break;
