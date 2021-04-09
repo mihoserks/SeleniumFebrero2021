@@ -1,0 +1,29 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
+
+<suite name="Login Demo" thread-count="5"
+	configfailurepolicy="continue">
+
+
+	
+	<test name="Login todas sus variantes">
+		<classes>
+			
+			
+			<class name="">
+				<methods>
+					<include name="" />
+					<include name="" />
+					<include name="" />
+				</methods>
+			</class>
+			
+			
+		</classes>
+
+	</test>
+
+</suite>  
+
+
+
