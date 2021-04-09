@@ -1,0 +1,16 @@
+{
+	"usuario1": {
+		"user": "Admin",
+		"password": "admin123",
+		"title": "",
+		"mensajeError": "Invalid credentials"
+	},
+	"usuario2": {
+		"user": "Admin",
+		"password": "admin123",
+		"title": "",
+		"mensajeError": "Invalid credentials"
+	}
+}
+
+

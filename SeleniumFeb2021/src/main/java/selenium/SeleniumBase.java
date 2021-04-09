@@ -1,5 +1,7 @@
 package selenium;
 
+import java.io.File;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -8,7 +10,10 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
+import com.fasterxml.jackson.databind.JsonNode;
+
 import comun.Base;
+import comun.SpreadsheetUtil;
 
 public class SeleniumBase extends Base{
 	WebDriver driver;
@@ -51,10 +56,31 @@ public class SeleniumBase extends Base{
 	public void loginFallido() {
 		ingresarTexto(txt_userName,randomName());
 		ingresarTexto(txt_password,randomNumber(3));
+		highlighElement(txt_userName);
+		highlighElement(txt_password);
+		highlighElement(btn_login);
 		click(btn_login);
 		
-		Assert.assertEquals(text_mensajeDeError.getText(), "Invalid credentials");
-		
+		 String fileName = System.getProperty("user.dir") +"/data/excel/Test Data.xlsx";
+		 
+		  String sheet = "usuarios";
+	      
+		  SpreadsheetUtil spreadsheet = new SpreadsheetUtil(new File(fileName));
+	      spreadsheet.switchToSheet(sheet);
+	        
+	        int row = 1;
+	        String user = spreadsheet.getCellData("User", row);
+	        System.out.println(user);
+	        String password = spreadsheet.getCellData("Password", row);
+	        System.out.println(password);
+	        Assert.assertEquals(text_mensajeDeError.getText(), "Invalid credentials");
+	        
+	        
+	        JsonNode nodeTree = readJsonFileByNode(System.getProperty("user.dir") +"/data/json/data.json", "usuario1");
+	        String userJson = nodeTree.path("user").asText();
+	        String passwordJson = nodeTree.path("password").asText();
+	        System.out.println(userJson);
+	        System.out.println(passwordJson);
 	}
 	
 	
