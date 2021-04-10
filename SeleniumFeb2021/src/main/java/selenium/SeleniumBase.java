@@ -38,56 +38,54 @@ public class SeleniumBase extends Base{
 	@BeforeTest
 	public void initDriver() {
 		driver = startWebDriver();
-//		PageFactory.initElements(driver, this);
-		page.getPage(SeleniumBase.class);
+		PageFactory.initElements(driver, this);
+//		page.getPage(SeleniumBase.class);
 	}
 	
-	@Test(enabled= true, priority=2)
-	public void loginExitoso() throws Exception{
-		ingresarTexto(txt_userName,"Admin");
-		
-		ingresarTexto(txt_password,"admin123");
+	@Test(enabled = true, priority = 2)
+	public void loginExitoso() throws SocketException, InterruptedException   {
+
+		JsonNode nodeTree = readJsonFileByNode(System.getProperty("user.dir") + "/data/json/data.json", "usuario1");
+
+		String userJson = nodeTree.path("user").asText();
+		String passwordJson = nodeTree.path("password").asText();
+
+		ingresarTexto(txt_userName, userJson);
+		ingresarTexto(txt_password, passwordJson);
 		click(btn_login);
+		takeScreenShot();
 		
 		if (verificarElementoExiste(link_welcome) == false) {
 			Assert.fail("El Login No fue exitoso");
+			
 		}
+
 		
-		
-		closeBrowser();
+			closeBrowser();
+	
 	}
 	
 	@Test(enabled= true, priority=1)
-	public void loginFallido() throws SocketException, InterruptedException {
-		ingresarTexto(txt_userName,randomName());
-		ingresarTexto(txt_password,randomNumber(3));
+	public void loginFallido(){
+
+		String fileName = System.getProperty("user.dir") + "/data/excel/Test Data.xlsx";
+
+		SpreadsheetUtil spreadsheet = new SpreadsheetUtil(new File(fileName));
+		spreadsheet.switchToSheet("usuarios");
+
+		String user = spreadsheet.getCellData("User", 2);
+		String password = spreadsheet.getCellData("Password", 1);
+
+		ingresarTexto(txt_userName, user);
+		ingresarTexto(txt_password, password);
 		highlighElement(txt_userName);
 		highlighElement(txt_password);
 		highlighElement(btn_login);
 		click(btn_login);
-		
-		 String fileName = System.getProperty("user.dir") +"/data/excel/Test Data.xlsx";
-		 
-		  String sheet = "usuarios";
-	      
-		  SpreadsheetUtil spreadsheet = new SpreadsheetUtil(new File(fileName));
-	      spreadsheet.switchToSheet(sheet);
-	        
-	        int row = 1;
-	        String user = spreadsheet.getCellData("User", row);
-	        System.out.println(user);
-	        String password = spreadsheet.getCellData("Password", row);
-	        System.out.println(password);
-	        Assert.assertEquals(text_mensajeDeError.getText(), "Invalid credentials");
-	        
-	        
-	        JsonNode nodeTree = readJsonFileByNode(System.getProperty("user.dir") +"/data/json/data.json", "usuario1");
-	        String userJson = nodeTree.path("user").asText();
-	        String passwordJson = nodeTree.path("password").asText();
-	        System.out.println(userJson);
-	        System.out.println(passwordJson);
-	        
-	        
+
+		Assert.assertEquals(text_mensajeDeError.getText(), spreadsheet.getCellData("errorMessage", 1));
+		highlighElement(text_mensajeDeError);
+
 	}
 	
 	

@@ -272,7 +272,7 @@ public class Base {
 	 * @Description verifica que un WebElement exista
 	 * @param WebElement
 	 **/
-	public boolean verificarElementoExiste(WebElement object) {
+	public boolean verificarElementoExiste(WebElement object)  {
 		try {
 			object.getSize();
 			Reporter.log("El Elemento existe", true);
@@ -370,7 +370,7 @@ public class Base {
 	         File scrFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
 	    
 	            try {
-	                FileUtils.copyFile(scrFile, new File(path+"_"+formater.format(calendar.getTime())+".jpg"));
+	                FileUtils.copyFile(scrFile, new File(path+"Screen_"+formater.format(calendar.getTime())+".png"));
 	                System.out.println("***Placed screen shot in "+path+" ***");
 	          
 	            } catch (IOException e) {
@@ -493,17 +493,20 @@ public class Base {
 		 * @return N/A
 		 * @throws SocketException InterruptedException
 		 */
-		public void closeBrowser() throws SocketException, InterruptedException  {
+		public void closeBrowser() throws SocketException, InterruptedException {
+
+			Thread.sleep(2000);
 			if (driver != null) {
-				driver.close();
+
+//					driver.close();
 				driver.quit();
+				Thread.sleep(2000);
 				Reporter.log("Driver was quited ", true);
 			} else {
 				Reporter.log("Driver was not found ", true);
 			}
-			
-			
-		}
+
+		}// end method
 		 
 
 	
