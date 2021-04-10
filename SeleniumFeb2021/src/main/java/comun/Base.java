@@ -2,6 +2,7 @@ package comun;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.SocketException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
@@ -87,7 +88,7 @@ public class Base {
 			default:
 				System.out.println("El driver [ " + browser + " ] no esta configurado para funcionar en este proyecto");
 			}// end switch
-
+			page = new InitPages(driver);
 			driver.manage().timeouts().implicitlyWait(20, TimeUnit.MILLISECONDS);
 			Reporter.log("El web Driver fue inicializado [ " + browser + " ]", true);
 		} catch (Exception e) {
@@ -362,9 +363,10 @@ public class Base {
 	  
 		   	String path = System.getProperty("user.dir");
 		   	path = path + "\\test-output\\screenshot\\";
-	    	 Calendar calendar = Calendar.getInstance();
-	    	 
+	    	
+		   	Calendar calendar = Calendar.getInstance();
 	         SimpleDateFormat formater = new SimpleDateFormat("dd_MM_yyyy_hh_mm_ss");
+	         
 	         File scrFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
 	    
 	            try {
@@ -453,7 +455,7 @@ public class Base {
 		 * @throws Exception
 		 * @Description click in the webElement
 		 * @Author Sergio Ramones
-		 * @Date 04/08/2020
+		 * @Date 04/08/2021
 		 * @Parameter List WebElement, text
 		 * @return N/A
 		 */
@@ -480,6 +482,27 @@ public class Base {
 				Reporter.log("The Element is not the list: " + text);
 				e.printStackTrace();
 			}
+		}
+		
+		
+		/**
+		 * @Description close browser
+		 * @Author Sergio Ramones
+		 * @Date 09/04/2021
+		 * @Parameter N/A
+		 * @return N/A
+		 * @throws SocketException InterruptedException
+		 */
+		public void closeBrowser() throws SocketException, InterruptedException  {
+			if (driver != null) {
+				driver.close();
+				driver.quit();
+				Reporter.log("Driver was quited ", true);
+			} else {
+				Reporter.log("Driver was not found ", true);
+			}
+			
+			
 		}
 		 
 

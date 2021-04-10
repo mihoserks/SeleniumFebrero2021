@@ -1,6 +1,7 @@
 package selenium;
 
 import java.io.File;
+import java.net.SocketException;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -37,12 +38,14 @@ public class SeleniumBase extends Base{
 	@BeforeTest
 	public void initDriver() {
 		driver = startWebDriver();
-		PageFactory.initElements(driver, this);
+//		PageFactory.initElements(driver, this);
+		page.getPage(SeleniumBase.class);
 	}
 	
 	@Test(enabled= true, priority=2)
-	public void loginExitoso() {
+	public void loginExitoso() throws Exception{
 		ingresarTexto(txt_userName,"Admin");
+		
 		ingresarTexto(txt_password,"admin123");
 		click(btn_login);
 		
@@ -50,10 +53,12 @@ public class SeleniumBase extends Base{
 			Assert.fail("El Login No fue exitoso");
 		}
 		
+		
+		closeBrowser();
 	}
 	
 	@Test(enabled= true, priority=1)
-	public void loginFallido() {
+	public void loginFallido() throws SocketException, InterruptedException {
 		ingresarTexto(txt_userName,randomName());
 		ingresarTexto(txt_password,randomNumber(3));
 		highlighElement(txt_userName);
@@ -81,6 +86,8 @@ public class SeleniumBase extends Base{
 	        String passwordJson = nodeTree.path("password").asText();
 	        System.out.println(userJson);
 	        System.out.println(passwordJson);
+	        
+	        
 	}
 	
 	

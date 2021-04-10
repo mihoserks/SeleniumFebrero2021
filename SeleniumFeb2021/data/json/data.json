@@ -10,7 +10,11 @@
 		"password": "admin123",
 		"title": "",
 		"mensajeError": "Invalid credentials"
+	},
+	"usuario3": {
+		"user": "Admin",
+		"password": "admin123",
+		"title": "",
+		"mensajeError": "Invalid credentials"
 	}
 }
-
-
