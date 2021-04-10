@@ -34,6 +34,7 @@ public class Menu extends Base{
 	public void seleccionaMenuSubMenu(String menu, String subMenu) throws Exception {
 		selectElementByValue(list_Menu, menu);
 		selectElementByValue(list_subMenu, subMenu);
+		takeScreenShot();
 
 	}
 	
