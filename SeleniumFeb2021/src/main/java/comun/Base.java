@@ -461,7 +461,7 @@ public class Base {
 		 */
 		public void selectElementByValue(List<WebElement> element, String text) throws Exception {
 			try {
-				elementIsVisible(element.get(0));
+//				elementIsVisible(element.get(0));
 				for (int i = 0; i <= element.size(); i++) {
 
 					if (i >= element.size()) {
@@ -471,12 +471,13 @@ public class Base {
 
 					if (element.get(i).getText().contains(text)) {
 						scroll(element.get(i));
+						highlighElement(element.get(i));
 						click(element.get(i));
 						break;
 					}
 
 				} // end for
-				Reporter.log("The Element in the list was selected: " + text);
+				Reporter.log("The Element in the list was selected: " + text, true);
 
 			} catch (Exception e) {
 				Reporter.log("The Element is not the list: " + text);
@@ -498,8 +499,8 @@ public class Base {
 			Thread.sleep(2000);
 			if (driver != null) {
 
-//					driver.close();
-				driver.quit();
+				driver.close();
+//				driver.quit();
 				Thread.sleep(2000);
 				Reporter.log("Driver was quited ", true);
 			} else {
