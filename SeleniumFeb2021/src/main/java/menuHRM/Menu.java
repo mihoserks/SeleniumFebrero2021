@@ -31,7 +31,7 @@ public class Menu extends Base{
 	 * @return N/A
 	 * @throws Exception 
 	 * **/
-	public void seleccionaMenuSubMenu(String menu, String subMenu) throws Exception {
+	public void seleccionaMenuSubMenu(String menu, String subMenu) {
 		selectElementByValue(list_Menu, menu);
 		selectElementByValue(list_subMenu, subMenu);
 		takeScreenShot();

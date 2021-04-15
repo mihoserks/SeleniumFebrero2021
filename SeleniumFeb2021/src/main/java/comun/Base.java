@@ -14,6 +14,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.JavascriptExecutor;
@@ -38,7 +40,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class Base {
+public class Base   {
 
 
 	static LeerProperties prop = new LeerProperties();
@@ -46,6 +48,7 @@ public class Base {
 	static String path = System.getProperty("user.dir");
 	public static InitPages page;
 	
+
 	
 	/**
 	 * @author Sergio
@@ -80,16 +83,17 @@ public class Base {
 			case "edge":
 				System.setProperty("webdriver.edge.driver", path + "\\edgedriver\\msedgedriver.exe");
 				EdgeOptions eoptions = new EdgeOptions();
-				eoptions.addArguments("--start-maximized");
-				eoptions.addArguments("-inprivate");
+//				eoptions.addArguments("--start-maximized");
+//				eoptions.addArguments("-inprivate");
 				driver = new EdgeDriver(eoptions);
+				driver.manage().window().maximize();
 				driver.get(url);
 				break;
 
 			default:
 				System.out.println("El driver [ " + browser + " ] no esta configurado para funcionar en este proyecto");
 			}// end switch
-			page = new InitPages(driver);
+			page = new InitPages(driver);//Duration.ofMillis(100)
 			driver.manage().timeouts().implicitlyWait(20, TimeUnit.MILLISECONDS);
 			Reporter.log("El web Driver fue inicializado [ " + browser + " ]", true);
 		} catch (Exception e) {
@@ -107,9 +111,10 @@ public class Base {
 	 * @param N/A
 	 * **/
 	public WebDriver startWebDriver(String browser, String url) {
+//		System.setProperty("java.net.preferIPv6Stack", "true");
 		try {
-
-			System.setProperty("java.net.preferIPv4Stack", "true");
+			
+			
 
 			switch (browser) {
 
@@ -132,9 +137,10 @@ public class Base {
 			case "edge":
 				System.setProperty("webdriver.edge.driver", path + "\\edgedriver\\msedgedriver.exe");
 				EdgeOptions eoptions = new EdgeOptions();
-				eoptions.addArguments("--start-maximized");
-				eoptions.addArguments("-inprivate");
+//				eoptions.addArguments("--start-maximized");
+//				eoptions.addArguments("-inprivate");
 				driver = new EdgeDriver(eoptions);
+				driver.manage().window().maximize();
 				driver.get(url);
 				break;
 
@@ -142,7 +148,7 @@ public class Base {
 				System.out.println("El driver [ " + browser + " ] no esta configurado para funcionar en este proyecto");
 			}// end switch
 			page = new InitPages(driver);
-			driver.manage().timeouts().implicitlyWait(20, TimeUnit.MILLISECONDS);
+			driver.manage().timeouts().implicitlyWait(100, TimeUnit.MILLISECONDS);
 			Reporter.log("El web Driver fue inicializado [ " + browser + " ]", true);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -258,7 +264,7 @@ public class Base {
 		try {	
 				object.clear();
 				object.sendKeys(texto);
-				Reporter.log("El texto  se ingreso correctamente [ "+texto+" ]", true);
+				Reporter.log("El texto  se ingreso correctamente <b>[ "+texto+" ] </b>", true);
 			
 			
 		}catch(NoSuchElementException e) {
@@ -276,7 +282,7 @@ public class Base {
 	public void click(WebElement object) {
 		try {
 			object.click();
-			Reporter.log("Se dio click en el web element correctamente", true);
+			Reporter.log("<b> Se dio click en el web element correctamente </b>" , true);
 
 		} catch (NoSuchElementException e) {
 			Reporter.log("No fue posible hacer click");
@@ -343,7 +349,7 @@ public class Base {
 	 * @Date 09/04/2021
 	 * @parameter WebElement
 	 * */
-	public void scroll(WebElement webElement) throws Exception {
+	public void scroll(WebElement webElement)  {
 		try {
 			((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", webElement);
 			Reporter.log("Element was scroll into View",true);
@@ -379,9 +385,9 @@ public class Base {
 	 * @Date 09/04/2021
 	 * @parameter WebElement
 	 * */
-	public void elementIsVisible(WebElement webElement) throws Exception {
+	public void elementIsVisible(WebElement webElement)  {
 		try {
-			WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(60));
+			WebDriverWait wait = new WebDriverWait(driver, 60);
 			wait.until(ExpectedConditions.visibilityOf(webElement));
 			
 			Reporter.log("Element is present in the page", true);
@@ -394,11 +400,28 @@ public class Base {
 	 * @Description verify element is present 
 	 * @author Sergio.Ramones
 	 * @Date 09/04/2021
+	 * @parameter WebElement
+	 * */
+	public void waitForElement(WebElement webElement) {
+		try {
+			WebDriverWait wait = new WebDriverWait(driver, 60);
+			wait.until(ExpectedConditions.visibilityOf(webElement));
+			wait.until(ExpectedConditions.elementToBeClickable(webElement));;
+			Reporter.log("Element is present in the page", true);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * @Description verify element is present 
+	 * @author Sergio.Ramones
+	 * @Date 09/04/2021
 	 * @parameter text
 	 * */
-	public void titleIsPresent(String text) throws Exception {
+	public void titleIsPresent(String text) {
 		try {
-			WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(60));
+			WebDriverWait wait = new WebDriverWait(driver, 60);
 			wait.until(ExpectedConditions.titleIs(text));
 			
 			Reporter.log("title is present in the page", true);
@@ -424,9 +447,10 @@ public class Base {
 	         File scrFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
 	    
 	            try {
-	                FileUtils.copyFile(scrFile, new File(path+"Screen_"+formater.format(calendar.getTime())+".png"));
-	                System.out.println("***Placed screen shot in "+path+" ***");
-	          
+	            	String pathscreen = path+driver.getTitle()+"_"+formater.format(calendar.getTime())+".png";
+	                FileUtils.copyFile(scrFile, new File(pathscreen));
+	                System.out.println("***Placed screen shot in "+pathscreen+" ***");
+	                Reporter.log("<br> <img src='"+pathscreen+"' height='400' with='400'/><br>");
 	            } catch (IOException e) {
 	                e.printStackTrace();
 	            }
@@ -513,13 +537,13 @@ public class Base {
 		 * @Parameter List WebElement, text
 		 * @return N/A
 		 */
-		public void selectElementByValue(List<WebElement> element, String text) throws Exception {
+		public void selectElementByValue(List<WebElement> element, String text)  {
 			try {
-//				elementIsVisible(element.get(0));
+//				
 				for (int i = 0; i <= element.size(); i++) {
 
 					if (i >= element.size()) {
-						Assert.fail("The Text is not in the list: " + text);
+						Assert.fail("The Text is not in the list: <b>" + text+"</b>");
 						break;
 					}
 
@@ -531,7 +555,7 @@ public class Base {
 					}
 
 				} // end for
-				Reporter.log("The Element in the list was selected: " + text, true);
+				Reporter.log("The Element in the list was selected: <b>" + text+"</b>", true);
 
 			} catch (Exception e) {
 				Reporter.log("The Element is not the list: " + text);
@@ -550,16 +574,17 @@ public class Base {
 		 */
 		public void closeBrowser(){
 
-			
+		
 			if (driver != null) {
 
-//				driver.close();
-				driver.quit();
+				driver.close();
+//				driver.quit();
 				
 				Reporter.log("Driver was quited ", true);
 			} else {
 				Reporter.log("Driver was not found ", true);
 			}
+		
 
 		}// end method
 		 

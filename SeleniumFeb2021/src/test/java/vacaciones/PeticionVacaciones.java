@@ -28,6 +28,7 @@ public class PeticionVacaciones extends Base{
 	@BeforeTest
 	public void leerDatos() {
 		System.setProperty("java.net.preferIPv4Stack", "true");
+//		System.setProperty("Java.net.preferIPv4Stack" , "true");
 		JsonNode nodeTree = readJsonFileByNode(path + "/data/json/data.json", "usuario1");
 		userJS = nodeTree.path("user").asText();
 		passwordJS = nodeTree.path("password").asText();
@@ -46,7 +47,7 @@ public class PeticionVacaciones extends Base{
 	
 	
 	@Test(enabled = true, priority=1)
-	public void pedirVacacionesCorrectamente() throws Exception {
+	public void pedirVacacionesCorrectamente()  {
 		logger.info("=====================Pedir Vacaciones inicio===========================");
 		driver = startWebDriver();
 		page.getPage(Login.class).loginExistoso(userJS, passwordJS);
@@ -67,12 +68,14 @@ public class PeticionVacaciones extends Base{
 		
 		
 		logger.info("Usuiario Usado: "+ userJS+" Password Usado: "+ passwordJS);
-		closeBrowser();
+	
+			closeBrowser();
+		
 	}
 	
 	@Parameters({"browser2", "url"})
 	@Test(enabled = true, priority=3)
-	public void pedirVacacionesCorrectamente2(String browser1, String url) throws Exception {
+	public void pedirVacacionesCorrectamente2(String browser1, String url)  {
 		logger.info("=====================Pedir Vacaciones inicio===========================");
 		driver = startWebDriver(browser1, url);
 		page.getPage(Login.class).loginExistoso(userJS, passwordJS);
@@ -86,7 +89,7 @@ public class PeticionVacaciones extends Base{
 	
 	@Parameters({"browser3", "url"})
 	@Test(enabled = true, priority=4)
-	public void pedirVacacionesCorrectamente3(String browser1, String url) throws Exception {
+	public void pedirVacacionesCorrectamente3(String browser1, String url) {
 		logger.info("=====================Pedir Vacaciones inicio===========================");
 		driver = startWebDriver(browser1, url);
 		page.getPage(Login.class).loginExistoso(userJS, passwordJS);

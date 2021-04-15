@@ -39,7 +39,7 @@ public class Login extends Base{
 		highlighElement(btn_login);
 		click(btn_login);
 		takeScreenShot();
-
+		waitForElement(link_welcome);
 		if (verificarElementoExiste(link_welcome) == false) {
 			Assert.fail("El Login No fue exitoso");
 
