@@ -1,12 +1,12 @@
 package vacaciones;
 
 import java.io.File;
-import java.net.SocketException;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -27,6 +27,7 @@ public class PeticionVacaciones extends Base{
 	
 	@BeforeTest
 	public void leerDatos() {
+		System.setProperty("java.net.preferIPv4Stack", "true");
 		JsonNode nodeTree = readJsonFileByNode(path + "/data/json/data.json", "usuario1");
 		userJS = nodeTree.path("user").asText();
 		passwordJS = nodeTree.path("password").asText();
@@ -56,10 +57,52 @@ public class PeticionVacaciones extends Base{
 		
 	}
 	
+	@Parameters({"browser1", "url"})
+	@Test(enabled = true, priority=2)
+	public void pedirVacacionesCorrectamente1(String browser1, String url) throws Exception {
+		logger.info("=====================Pedir Vacaciones inicio===========================");
+		driver = startWebDriver(browser1, url);
+		page.getPage(Login.class).loginExistoso(userJS, passwordJS);
+		page.getPage(Menu.class).seleccionaMenuSubMenu("Leave", "Assign Leave");
+		
+		
+		logger.info("Usuiario Usado: "+ userJS+" Password Usado: "+ passwordJS);
+		closeBrowser();
+	}
+	
+	@Parameters({"browser2", "url"})
+	@Test(enabled = true, priority=3)
+	public void pedirVacacionesCorrectamente2(String browser1, String url) throws Exception {
+		logger.info("=====================Pedir Vacaciones inicio===========================");
+		driver = startWebDriver(browser1, url);
+		page.getPage(Login.class).loginExistoso(userJS, passwordJS);
+		page.getPage(Menu.class).seleccionaMenuSubMenu("Leave", "Assign Leave");
+		
+		
+		logger.info("Usuiario Usado: "+ userJS+" Password Usado: "+ passwordJS);
+		closeBrowser();
+		
+	}
+	
+	@Parameters({"browser3", "url"})
+	@Test(enabled = true, priority=4)
+	public void pedirVacacionesCorrectamente3(String browser1, String url) throws Exception {
+		logger.info("=====================Pedir Vacaciones inicio===========================");
+		driver = startWebDriver(browser1, url);
+		page.getPage(Login.class).loginExistoso(userJS, passwordJS);
+		page.getPage(Menu.class).seleccionaMenuSubMenu("Leave", "Assign Leave");
+		
+		
+		logger.info("Usuiario Usado: "+ userJS+" Password Usado: "+ passwordJS);
+		closeBrowser();
+		
+	}
+	
 	
 	@AfterTest
-	public void cerrarExplorador() throws SocketException, InterruptedException{
-		driver.close();
+	public void cerrarExplorador() {
+		
+		
 		logger.info("=====================Pedir Vacaciones Finalizo===========================");
 	}
 	

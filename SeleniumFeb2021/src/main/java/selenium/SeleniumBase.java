@@ -1,6 +1,7 @@
 package selenium;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.SocketException;
 
 import org.openqa.selenium.WebDriver;
@@ -43,7 +44,7 @@ public class SeleniumBase extends Base{
 	}
 	
 	@Test(enabled = true, priority = 2)
-	public void loginExitoso() throws SocketException, InterruptedException   {
+	public void loginExitoso() throws InterruptedException, IOException   {
 
 		JsonNode nodeTree = readJsonFileByNode(System.getProperty("user.dir") + "/data/json/data.json", "usuario1");
 

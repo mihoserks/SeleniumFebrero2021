@@ -46,6 +46,7 @@ public class Base {
 	static String path = System.getProperty("user.dir");
 	public static InitPages page;
 	
+	
 	/**
 	 * @author Sergio
 	 * @Date 27-03-2021
@@ -55,7 +56,7 @@ public class Base {
 	public WebDriver startWebDriver() {
 		try {
 			prop.getSystemProperties();
-
+			System.setProperty("java.net.preferIPv4Stack", "true");
 			String browser = System.getProperty("BROWSER");
 			String url = System.getProperty("URL");
 			switch (browser) {
@@ -98,6 +99,59 @@ public class Base {
 
 		return driver;
 	}// end startWebDriver
+	
+	/**
+	 * @author Sergio
+	 * @Date 27-03-2021
+	 * @Description Este metodo Inicializa el web driver con lo que tenemos en el data.properties 
+	 * @param N/A
+	 * **/
+	public WebDriver startWebDriver(String browser, String url) {
+		try {
+
+			System.setProperty("java.net.preferIPv4Stack", "true");
+
+			switch (browser) {
+
+			case "chrome":
+				System.setProperty("webdriver.chrome.driver", path + "\\chromedriver\\chromedriver.exe");
+				ChromeOptions option = new ChromeOptions();
+				option.addArguments("--start-maximized");
+				option.addArguments("--incognito");
+				driver = new ChromeDriver(option);
+				driver.get(url);
+				break;
+			case "firefox":
+				System.setProperty("webdriver.gecko.driver", path + "\\geckodriver\\geckodriver.exe");
+				FirefoxOptions foption = new FirefoxOptions();
+				foption.addArguments("--start-maximized");
+				foption.addArguments("-private");
+				driver = new FirefoxDriver(foption);
+				driver.get(url);
+				break;
+			case "edge":
+				System.setProperty("webdriver.edge.driver", path + "\\edgedriver\\msedgedriver.exe");
+				EdgeOptions eoptions = new EdgeOptions();
+				eoptions.addArguments("--start-maximized");
+				eoptions.addArguments("-inprivate");
+				driver = new EdgeDriver(eoptions);
+				driver.get(url);
+				break;
+
+			default:
+				System.out.println("El driver [ " + browser + " ] no esta configurado para funcionar en este proyecto");
+			}// end switch
+			page = new InitPages(driver);
+			driver.manage().timeouts().implicitlyWait(20, TimeUnit.MILLISECONDS);
+			Reporter.log("El web Driver fue inicializado [ " + browser + " ]", true);
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("El driver no puede ser inicializado");
+		}
+
+		return driver;
+	}// end startWebDriver
+	
 	
 	/**
 	 * @author Sergio
@@ -494,14 +548,14 @@ public class Base {
 		 * @return N/A
 		 * @throws SocketException InterruptedException
 		 */
-		public void closeBrowser() throws SocketException, InterruptedException {
+		public void closeBrowser(){
 
-			Thread.sleep(2000);
+			
 			if (driver != null) {
 
-				driver.close();
-//				driver.quit();
-				Thread.sleep(2000);
+//				driver.close();
+				driver.quit();
+				
 				Reporter.log("Driver was quited ", true);
 			} else {
 				Reporter.log("Driver was not found ", true);
