@@ -4,7 +4,6 @@ import java.io.File;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.WebDriver;
-import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
@@ -13,6 +12,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 import comun.Base;
 import comun.SpreadsheetUtil;
+import leave.AssignLeave;
 import loginHRM.Login;
 import menuHRM.Menu;
 
@@ -28,7 +28,6 @@ public class PeticionVacaciones extends Base{
 	@BeforeTest
 	public void leerDatos() {
 		System.setProperty("java.net.preferIPv4Stack", "true");
-//		System.setProperty("Java.net.preferIPv4Stack" , "true");
 		JsonNode nodeTree = readJsonFileByNode(path + "/data/json/data.json", "usuario1");
 		userJS = nodeTree.path("user").asText();
 		passwordJS = nodeTree.path("password").asText();
@@ -49,17 +48,20 @@ public class PeticionVacaciones extends Base{
 	@Test(enabled = true, priority=1)
 	public void pedirVacacionesCorrectamente()  {
 		logger.info("=====================Pedir Vacaciones inicio===========================");
+		logger.info("Usuiario Usado: "+ userJS+" Password Usado: "+ passwordJS);
 		driver = startWebDriver();
 		page.getPage(Login.class).loginExistoso(userJS, passwordJS);
 		page.getPage(Menu.class).seleccionaMenuSubMenu("Leave", "Assign Leave");
+		page.getPage(AssignLeave.class).pedirVacacionesValidas("Orange Test", "US - Personal", "2021-04-19", "2021-04-19", "Full Day", "Comentario", "Employee does not have sufficient leave balance for leave request. Click OK to confirm leave assignment.");
+		page.getPage(Menu.class).cerrarSession();
+		closeBrowser();
 		
 		
-		logger.info("Usuiario Usado: "+ userJS+" Password Usado: "+ passwordJS);
 		
 	}
 	
 	@Parameters({"browser1", "url"})
-	@Test(enabled = true, priority=2)
+	@Test(enabled = false, priority=2)
 	public void pedirVacacionesCorrectamente1(String browser1, String url) throws Exception {
 		logger.info("=====================Pedir Vacaciones inicio===========================");
 		driver = startWebDriver(browser1, url);
@@ -74,7 +76,7 @@ public class PeticionVacaciones extends Base{
 	}
 	
 	@Parameters({"browser2", "url"})
-	@Test(enabled = true, priority=3)
+	@Test(enabled = false, priority=3)
 	public void pedirVacacionesCorrectamente2(String browser1, String url)  {
 		logger.info("=====================Pedir Vacaciones inicio===========================");
 		driver = startWebDriver(browser1, url);
@@ -88,7 +90,7 @@ public class PeticionVacaciones extends Base{
 	}
 	
 	@Parameters({"browser3", "url"})
-	@Test(enabled = true, priority=4)
+	@Test(enabled = false, priority=4)
 	public void pedirVacacionesCorrectamente3(String browser1, String url) {
 		logger.info("=====================Pedir Vacaciones inicio===========================");
 		driver = startWebDriver(browser1, url);
@@ -102,13 +104,7 @@ public class PeticionVacaciones extends Base{
 	}
 	
 	
-	@AfterTest
-	public void cerrarExplorador() {
-		
-		
-		logger.info("=====================Pedir Vacaciones Finalizo===========================");
-	}
-	
+
 	
 	
 }

@@ -21,6 +21,7 @@ import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.OutputType;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -31,6 +32,7 @@ import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.Reporter;
@@ -262,7 +264,11 @@ public class Base   {
 	 * **/
 	public void ingresarTexto(WebElement object, String texto) {
 		try {	
+			if(texto.equals("")) {
+				Reporter.log("no ingresaremos el texto <b>[ "+texto+" ] </b>", true);
+			}
 				object.clear();
+				highlighElement(object);
 				object.sendKeys(texto);
 				Reporter.log("El texto  se ingreso correctamente <b>[ "+texto+" ] </b>", true);
 			
@@ -281,6 +287,7 @@ public class Base   {
 	 **/
 	public void click(WebElement object) {
 		try {
+			highlighElement(object);
 			object.click();
 			Reporter.log("<b> Se dio click en el web element correctamente </b>" , true);
 
@@ -312,7 +319,7 @@ public class Base   {
 	 * @Parameter WebElement, String
 	 * @return N/A
 	 */
-	public String getText(WebElement element) throws Exception {
+	public String getText(WebElement element)  {
 		String text = "no text yet";
 		try {
 			
@@ -450,7 +457,7 @@ public class Base   {
 	            	String pathscreen = path+driver.getTitle()+"_"+formater.format(calendar.getTime())+".png";
 	                FileUtils.copyFile(scrFile, new File(pathscreen));
 	                System.out.println("***Placed screen shot in "+pathscreen+" ***");
-	                Reporter.log("<br> <img src='"+pathscreen+"' height='400' with='400'/><br>");
+	                Reporter.log("<br> <img src='"+pathscreen+"' height='200' with='200'/><br>");
 	            } catch (IOException e) {
 	                e.printStackTrace();
 	            }
@@ -587,6 +594,37 @@ public class Base   {
 		
 
 		}// end method
+		
+		/**
+		 * @Description selecciona un elemento del dropdown por el valor
+		 * @Author Sergio Ramones
+		 * @Date 17/04/2021
+		 * @Parameter N/A
+		 * @return N/A
+		 * @throws StaleElementReferenceException, NoSuchElementException
+		 */
+		public void selectDropdownByValue(WebElement object, String selectValue) {
+			Select action = new Select(object);
+			int intentos = 0;
+			
+			while(intentos <= 5) {
+				try {
+					highlighElement(object);
+					action.selectByVisibleText(selectValue);
+					Reporter.log("El elemento seleccionado : <b>[ "+selectValue+" ] </b>", true);
+					break;
+					
+				}catch(StaleElementReferenceException e) {
+						Reporter.log("El Elemento no puede ser seleccionado :<b> [ "+selectValue+" ]</b> ", true);
+				}//end catch
+				catch(NoSuchElementException e) {
+					Reporter.log("El Web element no existe <b>  [ "+selectValue+" ] </b>", true);
+				}
+				intentos++;
+			}//while
+			
+			
+		}//end methj
 		 
 
 	

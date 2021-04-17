@@ -19,7 +19,7 @@ public class Menu extends Base{
 	@FindBy(id="welcome")
 	WebElement link_welcome;
 	
-	@FindBy(linkText ="Logout")
+	@FindBy(xpath ="//a[text()='Logout']")
 	WebElement link_logout;
 	
 	

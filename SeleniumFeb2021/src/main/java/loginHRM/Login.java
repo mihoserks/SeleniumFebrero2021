@@ -32,11 +32,9 @@ public class Login extends Base{
 	 * 
 	 */
 	public void loginExistoso(String user, String password) {
-		highlighElement(txt_userName);
+		
 		ingresarTexto(txt_userName, user);
-		highlighElement(txt_password);
 		ingresarTexto(txt_password, password);
-		highlighElement(btn_login);
 		click(btn_login);
 		takeScreenShot();
 		waitForElement(link_welcome);
