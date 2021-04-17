@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Pedir Vacaciones">
+
+
+	<listeners>
+		<listener class-name="comun.Base"/>
+	</listeners>
+
+  <test thread-count="5" name="Vacaciones">
+  
+   		<parameter name="url" value="https://opensource-demo.orangehrmlive.com/" />
+		<parameter name="browser1" value="chrome" />
+		<parameter name="browser2" value="edge" />
+		<parameter name="browser3" value="firefox" /> 
+    
+    <classes>
+    
+    
+      <class name="vacaciones.PeticionVacaciones">
+      
+      	<methods>
+      		<exclude name="pedirVacacionesCorrectamente"/>
+      		<include name="pedirVacacionesCorrectamente1"/>
+      		<exclude name="pedirVacacionesCorrectamente2"/>
+			<exclude name="pedirVacacionesCorrectamente3"/>
+      	</methods>
+      	
+      </class>
+      
+     <class name="selenium.SeleniumTestNG"/>
+      
+    </classes>
+  </test> <!-- Test -->
+</suite> <!-- Suite -->

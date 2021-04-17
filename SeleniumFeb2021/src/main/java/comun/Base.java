@@ -5,17 +5,16 @@ import java.io.IOException;
 import java.net.SocketException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.JavascriptExecutor;
@@ -35,21 +34,25 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import org.testng.ITestNGMethod;
+import org.testng.ITestResult;
 import org.testng.Reporter;
+import org.testng.TestListenerAdapter;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class Base   {
+public class Base extends TestListenerAdapter  {
 
 
 	static LeerProperties prop = new LeerProperties();
 	static WebDriver driver;
 	static String path = System.getProperty("user.dir");
 	public static InitPages page;
-	
+	private Collection<ITestNGMethod> m_allTestMethods = new ConcurrentLinkedQueue<>();
+	private Collection<ITestResult> m_failedTests = new ConcurrentLinkedQueue<>();
 
 	
 	/**
@@ -266,12 +269,12 @@ public class Base   {
 		try {	
 			if(texto.equals("")) {
 				Reporter.log("no ingresaremos el texto <b>[ "+texto+" ] </b>", true);
-			}
+			}else {
 				object.clear();
 				highlighElement(object);
 				object.sendKeys(texto);
 				Reporter.log("El texto  se ingreso correctamente <b>[ "+texto+" ] </b>", true);
-			
+			}
 			
 		}catch(NoSuchElementException e) {
 			Reporter.log("El Texto no se pudo ingresar, web element no encontrado");
@@ -457,7 +460,7 @@ public class Base   {
 	            	String pathscreen = path+driver.getTitle()+"_"+formater.format(calendar.getTime())+".png";
 	                FileUtils.copyFile(scrFile, new File(pathscreen));
 	                System.out.println("***Placed screen shot in "+pathscreen+" ***");
-	                Reporter.log("<br> <img src='"+pathscreen+"' height='200' with='200'/><br>");
+	                Reporter.log("<br> <img src='"+pathscreen+"' height='400' with='400'/><br>");
 	            } catch (IOException e) {
 	                e.printStackTrace();
 	            }
@@ -626,6 +629,29 @@ public class Base   {
 			
 		}//end methj
 		 
+		/**
+		 * @Description Heredamos un metodo y sobrescribimos el funcionamiento agregamos que termine el driver y tome screenshot
+		 * @Author Sergio Ramones
+		 * @Date 17/04/2021
+		 * @Parameter N/A
+		 * @return N/A
+		 * @throws StaleElementReferenceException, NoSuchElementException
+		 */
+	@Override
+	public void onTestFailure(ITestResult tr) {
+	    m_allTestMethods.add(tr.getMethod());
+	    m_failedTests.add(tr);
+	    Reporter.log("Screenshot in <b>Failure</b>", true);
+		takeScreenShot();
+		
+		if (driver != null) {
 
-	
+			driver.close();
+//			driver.quit();
+			
+			Reporter.log("Driver was quited ", true);
+		} else {
+			Reporter.log("Driver was not found ", true);
+		}
+	}
 }

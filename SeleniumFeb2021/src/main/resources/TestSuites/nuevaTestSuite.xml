@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Test Collection" parallel="true">
+  
+  
+  <suite-files>
+  	<suite-file path="src\main\resources\TestSuites\testng.xml"/>
+  	<suite-file path="src\main\resources\TestSuites\loginWhithParameters.xml"/>
+  </suite-files>
+  
+
+
+</suite> <!-- Suite -->
