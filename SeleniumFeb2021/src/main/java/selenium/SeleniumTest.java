@@ -207,8 +207,8 @@ static String path = System.getProperty("user.dir");
 		case "edge":
 			System.setProperty("webdriver.edge.driver", path+"\\edgedriver\\msedgedriver.exe");
 			EdgeOptions eoptions = new EdgeOptions();
-			eoptions.addArguments("--start-maximized");
-			eoptions.addArguments("--incognito");
+//			eoptions.addArguments("--start-maximized");
+//			eoptions.addArguments("--incognito");
 			driver = new  EdgeDriver(eoptions);
 			driver.get(url);
 			break;

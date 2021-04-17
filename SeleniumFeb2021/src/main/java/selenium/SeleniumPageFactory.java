@@ -68,8 +68,8 @@ public class SeleniumPageFactory {
 			case "edge":
 				System.setProperty("webdriver.edge.driver", path+"\\edgedriver\\msedgedriver.exe");
 				EdgeOptions eoptions = new EdgeOptions();
-				eoptions.addArguments("--start-maximized");
-				eoptions.addArguments("-inprivate");
+//				eoptions.addArguments("--start-maximized");
+//				eoptions.addArguments("-inprivate");
 				driver = new  EdgeDriver(eoptions);
 				driver.get(url);
 				break;
