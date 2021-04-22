@@ -21,9 +21,6 @@
       
       	<methods>
       		<exclude name="pedirVacacionesCorrectamente"/>
-      		<include name="pedirVacacionesCorrectamente1"/>
-      		<exclude name="pedirVacacionesCorrectamente2"/>
-			<exclude name="pedirVacacionesCorrectamente3"/>
       	</methods>
       	
       </class>

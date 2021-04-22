@@ -17,6 +17,11 @@
 			<class name="vacaciones.PeticionVacaciones">
 				<methods>
 					<include name="pedirVacacionesCorrectamente" />
+				</methods>
+			</class>
+			
+				<class name="vacaciones.PeticionVacacionesParametros">
+				<methods>
 					<include name="pedirVacacionesCorrectamente1" />
 					<include name="pedirVacacionesCorrectamente2" />
 					<include name="pedirVacacionesCorrectamente3" />
