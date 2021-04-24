@@ -1,0 +1,4 @@
+whoami
+sed -i "s|PORTAL_PASSWORD|${PORTAL_PASSWORD}|g" C:\Users\srv44\.jenkins\workspace\SeleniumFeb21\SeleniumFeb2021\src\main\resources\datafiles\data.properties
+sed -i "s|PORTAL_USERNAME|${PORTAL_USERNAME}|g" C:\Users\srv44\.jenkins\workspace\SeleniumFeb21\SeleniumFeb2021\src\main\resources\datafiles\data.properties
+sed -i "s|BROWSER|${BROWSER}|g" C:\Users\srv44\.jenkins\workspace\SeleniumFeb21\SeleniumFeb2021\src\main\resources\datafiles\data.properties
