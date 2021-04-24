@@ -23,6 +23,7 @@ public class PeticionVacaciones extends Base{
 	WebDriver driver;
 	String userJS, passwordJS, mensajeErrorJS;
 	String userEx, passwordEx, mensajeErrorEx;
+	String PORTAL_USERNAME, PORTAL_PASSWORD;
 	
 	
 	@BeforeTest
@@ -40,6 +41,8 @@ public class PeticionVacaciones extends Base{
 		userEx = spreadsheet.getCellData("User", 1);
 		passwordEx = spreadsheet.getCellData("Password", 1);
 		mensajeErrorEx = spreadsheet.getCellData("errorMessage", 1);
+		
+		 
 
 	}
 	
@@ -50,7 +53,9 @@ public class PeticionVacaciones extends Base{
 		logger.info("=====================Pedir Vacaciones inicio===========================");
 		logger.info("Usuiario Usado: "+ userJS+" Password Usado: "+ passwordJS);
 		driver = startWebDriver();
-		page.getPage(Login.class).loginExistoso(userJS, passwordJS);
+		PORTAL_USERNAME = System.getProperty("PORTAL_USERNAME");
+		PORTAL_PASSWORD = System.getProperty("PORTAL_PASSWORD");
+		page.getPage(Login.class).loginExistoso(PORTAL_USERNAME, PORTAL_PASSWORD);
 		page.getPage(Menu.class).seleccionaMenuSubMenu("Leave", "Assign Leave");
 		page.getPage(AssignLeave.class).pedirVacacionesValidas("Orange Test", "US - Personal", "2021-04-19", "2021-04-19", "Full Day", "Comentario", "Employee does not have sufficient leave balance for leave request. Click OK to confirm leave assignment.");
 		page.getPage(Menu.class).cerrarSession();
