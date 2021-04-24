@@ -55,7 +55,7 @@ public class PeticionVacacionesParametros extends Base{
 		driver = startWebDriver(browser1, url);
 		page.getPage(Login.class).loginExistoso(userJS, passwordJS);
 		page.getPage(Menu.class).seleccionaMenuSubMenu("Leave", "Assign Leave");
-		page.getPage(AssignLeave.class).pedirVacacionesValidas("", "US - Personal", "2021-04-19", "2021-04-19", "Full Day", "Comentario", "Employee does not have sufficient leave balance for leave request. Click OK to confirm leave assignment.");
+		page.getPage(AssignLeave.class).pedirVacacionesValidas("Orange Test", "US - Personal", "2021-04-19", "2021-04-19", "Full Day", "Comentario", "Employee does not have sufficient leave balance for leave request. Click OK to confirm leave assignment.");
 		page.getPage(Menu.class).cerrarSession();
 		closeBrowser();
 		
@@ -83,16 +83,13 @@ public class PeticionVacacionesParametros extends Base{
 		driver = startWebDriver(browser1, url);
 		page.getPage(Login.class).loginExistoso(userJS, passwordJS);
 		page.getPage(Menu.class).seleccionaMenuSubMenu("Leave", "Assign Leave");
-		page.getPage(AssignLeave.class).pedirVacacionesValidas("Orange Test", "US - Personal", "2021-04-19", "2021-04-19", "Full Day", "", "Employee does not have sufficient leave balance for leave request. Click OK to confirm leave assignment.");
+		page.getPage(AssignLeave.class).pedirVacacionesValidas("Orange Test", "US - Personal", "2021-04-19", "2021-04-19", "Full Day", "Comentario", "Employee does not have sufficient leave balance for leave request. Click OK to confirm leave assignment.");
 		page.getPage(Menu.class).cerrarSession();
 		closeBrowser();
 		
 	}
 	
-	@AfterTest
-	public void close() {
-//		closeBrowser();
-	}
+
 
 	
 	
