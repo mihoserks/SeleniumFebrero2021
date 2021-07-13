@@ -15,7 +15,7 @@ public class PrimerScriptSelenium {
 	
 	driver = new ChromeDriver(option);
 	driver.get("https://opensource-demo.orangehrmlive.com/");
-	//driver.close();
+	driver.close();
 	}
 
 }
