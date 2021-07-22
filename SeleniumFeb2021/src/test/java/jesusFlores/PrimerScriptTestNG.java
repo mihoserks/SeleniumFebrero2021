@@ -53,7 +53,7 @@ public class PrimerScriptTestNG {
 			driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
 			break;
 		default:
-			Reporter.log("El explorador no existe", true);
+			Reporter.log("El explorador no existe"+ browserName, true);
 		}//end switch
 	}
 	@Test
@@ -71,7 +71,6 @@ public class PrimerScriptTestNG {
 			}
 			
 		} catch (Exception e) {
-			// TODO: handle exception
 			System.out.println("El login fue exitoso");
 		}
 		
